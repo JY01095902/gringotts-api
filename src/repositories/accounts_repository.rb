@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'entities'))
 require 'context'
 require 'account'
 
-class AccountRepository
+class AccountsRepository
     def initialize
         context = DbContext.new
         @accounts = context.accounts
@@ -13,15 +13,17 @@ class AccountRepository
     def insert_one(account)
         count = 0
         if(account.kind_of? Account)
+            objectId = DbContext.get_object_id
+            account.id = objectId.to_s
             account.creator_user_id = 1
             account.creation_time_utc = Time.new.utc
             document = account.to_hash
             document.delete(:id)
-            document[:_id] = DbContext.get_object_id
-            count = @accounts.insert_one(document)
+            document[:_id] = objectId
+            result = @accounts.insert_one(document)
+            count = result.n
         end
-        
-        return count
+        return count == 1 ? account.to_hash : nil
     end
 
     def update_one(filter, update)
@@ -43,6 +45,10 @@ class AccountRepository
     end
 
     def find(filter = nil)
+        if(filter.has_key?(:id))
+            filter[:_id] = DbContext.get_object_id(filter[:id])
+            filter.delete(:id)
+        end if filter != nil
         documents = @accounts.find(filter);
         accounts = Array.new
         documents.each do |document|

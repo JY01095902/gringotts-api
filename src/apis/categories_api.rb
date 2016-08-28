@@ -2,11 +2,11 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'repositories'))
 
 require 'grape'
 
-class TestController < Grape::API
+class CategoriesAPI < Grape::API
     version 'v1'
     prefix :api
     format :json
-    get 'test' do
+    get 'categories' do
         
         return 'ok'
     end

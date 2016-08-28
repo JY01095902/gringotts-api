@@ -1,8 +1,8 @@
 require 'grape'
-require 'accounts_controller'
-require 'test_controller'
+require 'accounts_api'
+require 'categories_api'
 
 class API < Grape::API
-    mount AccountsController
-    mount TestController
+    mount AccountsAPI
+    mount CategoriesAPI
 end
