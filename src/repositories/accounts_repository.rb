@@ -3,8 +3,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'entities'))
 
 require 'context'
 require 'account'
+require 'repository'
 
-class AccountsRepository
+class AccountsRepository < Repository
     def initialize
         context = DbContext.new
         @accounts = context.accounts
@@ -26,29 +27,29 @@ class AccountsRepository
         return count == 1 ? account.to_hash : nil
     end
 
+    def patch_one(filter, patch)
+        filter = Repository.format_filter(filter)
+        result = @accounts.update_one(filter, { '$set': patch })
+        return result.modified_count
+    end
+
     def update_one(filter, update)
-        if(filter.has_key?(:id))
-            filter[:_id] = DbContext.get_object_id(filter[:id])
-            filter.delete(:id)
+        filter = Repository.format_filter(filter)
+        if(update.has_key?(:id))
+            update.delete(:id)
         end
-        result = @accounts.update_one(filter, { '$set': update })
+        result = @accounts.update_one(filter, update)
         return result.modified_count
     end
 
     def delete_one(filter)
-        if(filter.has_key?(:id))
-            filter[:_id] = DbContext.get_object_id(filter[:id])
-            filter.delete(:id)
-        end
+        filter = Repository.format_filter(filter)
         result = @accounts.delete_one(filter)
         return result.deleted_count
     end
 
     def find(filter = nil)
-        if(filter.has_key?(:id))
-            filter[:_id] = DbContext.get_object_id(filter[:id])
-            filter.delete(:id)
-        end if filter != nil
+        filter = Repository.format_filter(filter) if filter != nil
         documents = @accounts.find(filter);
         accounts = Array.new
         documents.each do |document|

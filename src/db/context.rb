@@ -9,7 +9,7 @@ class DbContext
     attr_reader :categories;
 
     def initialize
-        client = Mongo::Client.new([ '127.0.0.1:20001' ], :database => 'gringotts')
+        client = Mongo::Client.new([ '127.0.0.1:27017' ], :database => 'gringotts')
 
         @accounts = client[:accounts]
         @vaults = client[:vaults]

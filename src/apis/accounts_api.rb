@@ -46,5 +46,39 @@ class AccountsAPI < Grape::API
                 return { message: 'no account has been deleted.'}
             end
         end
+        
+        patch ':id' do
+            patch = Hash.new
+            patch[:name] = params[:name]
+            patch[:image] = params[:image]
+            accounts_repository = AccountsRepository.new
+            modified_count = accounts_repository.patch_one({ id: params[:id]}, patch)
+            if(modified_count == 1)
+                status 204
+                return String.new
+            else
+                status 404
+                return { message: 'no account has been patched.'}
+            end
+        end
+        
+        params do
+            requires :name, type: String
+            optional :image, type: String, default: '/blank.png'
+        end
+        put ':id' do
+            account = Account.new
+            account.name = params[:name]
+            account.image = params[:image]
+            accounts_repository = AccountsRepository.new
+            modified_count = accounts_repository.update_one({ id: params[:id]}, account.to_hash)
+            if(modified_count == 1)
+                status 204
+                return String.new
+            else
+                status 404
+                return { message: 'no account has been updated.'}
+            end
+        end
     end
 end
