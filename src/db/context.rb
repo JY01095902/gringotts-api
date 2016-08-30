@@ -1,21 +1,21 @@
 require 'mongo'
 require 'bson'
+require 'singleton'
 
 class DbContext
-    attr_reader :accounts;
-    attr_reader :vaults;
-    attr_reader :chests;
-    attr_reader :spending;
-    attr_reader :categories;
+    include Singleton
+
+    attr_reader :collections;
 
     def initialize
         client = Mongo::Client.new([ '127.0.0.1:27017' ], :database => 'gringotts')
 
-        @accounts = client[:accounts]
-        @vaults = client[:vaults]
-        @chests = client[:chests]
-        @spending = client[:spending]
-        @categories = client[:categories]
+        @collections = Hash.new
+        @collections[:accounts] = client[:accounts]
+        @collections[:vaults] = client[:vaults]
+        @collections[:chests] = client[:chests]
+        @collections[:spending] = client[:spending]
+        @collections[:categories] = client[:categories]
     end
 
     def DbContext.get_object_id(string = nil)

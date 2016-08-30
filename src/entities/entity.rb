@@ -5,7 +5,7 @@ class Entity
     attr_accessor :last_modifier_user_id
     attr_accessor :last_modification_time_utc
     
-    def to_hash()
+    def to_hash
         return { 
                 id: self.id,
                 creator_user_id: self.creator_user_id,
