@@ -31,7 +31,7 @@ class CategoriesRepository < Repository
             category[:id] = document[:_id].to_s
             category[:name] = document[:name]
             category[:type] = document[:type]
-            categories.push(category)
+            categories << category
         end
         return categories
     end
