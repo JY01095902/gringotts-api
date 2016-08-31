@@ -7,7 +7,6 @@ class Repository
         @collection = context.collections[collection]
     end
 
-    protected
     def insert_one(document)
         if(document.has_key?(:id))
             document[:_id] = DbContext.get_object_id

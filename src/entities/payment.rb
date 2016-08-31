@@ -1,6 +1,6 @@
 require 'entity'
 
-class Spending < Entity
+class Payment < Entity
     attr_accessor :name
     attr_accessor :date
     attr_accessor :amount

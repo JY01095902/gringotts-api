@@ -49,8 +49,8 @@ class AccountsAPI < Grape::API
         
         patch ':id' do
             patch = Hash.new
-            patch[:name] = params[:name]
-            patch[:image] = params[:image]
+            patch[:name] = params[:name] if params[:name] != nil
+            patch[:image] = params[:image] if params[:image] != nil
             accounts_repository = AccountsRepository.new
             modified_count = accounts_repository.patch_one({ id: params[:id]}, patch)
             if(modified_count == 1)
