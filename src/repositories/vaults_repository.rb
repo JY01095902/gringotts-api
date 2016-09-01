@@ -32,7 +32,7 @@ class VaultsRepository < Repository
             vault[:name] = document[:name]
             vault[:amount] = document[:amount]
             vault[:account_id] = document[:account_id]
-            vaults.push(vault)
+            vaults << vault
         end
         return vaults
     end

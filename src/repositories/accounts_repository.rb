@@ -32,7 +32,7 @@ class AccountsRepository < Repository
             account[:id] = document[:_id].to_s
             account[:name] = document[:name]
             account[:image] = document[:image]
-            accounts.push(account)
+            accounts << account
         end
         return accounts
     end
