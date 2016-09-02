@@ -14,7 +14,7 @@ class DbContext
         @collections[:accounts] = client[:accounts]
         @collections[:vaults] = client[:vaults]
         @collections[:chests] = client[:chests]
-        @collections[:spending] = client[:spending]
+        @collections[:payments] = client[:payments]
         @collections[:categories] = client[:categories]
     end
 
