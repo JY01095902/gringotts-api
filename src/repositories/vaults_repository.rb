@@ -11,8 +11,9 @@ class VaultsRepository < Repository
     def insert_one(vault)
         created_vault = nil
         if(vault.kind_of? Vault)
-            vault.creator_user_id = 1
             vault.tenant_id = 1
+            vault.user_id = 1
+            vault.creator_user_id = 1
             vault.creation_time_utc = Time.new.utc
             document = vault.to_hash
             created_vault = super(document)

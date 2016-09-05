@@ -19,14 +19,14 @@ class TestChestsAPI <  Test::Unit::TestCase
     end
 
     def test_get_by_id
-        get "http://127.0.0.1:9292/api/v1/chests/57c9394939426836a80dd0ab"
+        get "http://127.0.0.1:9292/api/v1/chests/57cd201e3942682f746ac359"
         assert last_response.ok?
         assert JSON.parse(last_response.body).kind_of? Array
         assert_equal 1, JSON.parse(last_response.body).length
     end
 
     def test_post
-        post "http://127.0.0.1:9292/api/v1/chests", { name: 'test1', vault_id: "57c684703942683938634248"}
+        post "http://127.0.0.1:9292/api/v1/chests", { name: 'test1', vault_id: "57cd201f3942682f746ac35b"}
         assert JSON.parse(last_response.body).kind_of? Hash
         assert_equal 201, last_response.status
     end

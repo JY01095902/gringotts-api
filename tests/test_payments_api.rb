@@ -19,14 +19,14 @@ class TestPaymentsAPI <  Test::Unit::TestCase
     end
 
     def test_get_by_id
-        get "http://127.0.0.1:9292/api/v1/payments/57ccc2af39426843706bf810"
+        get "http://127.0.0.1:9292/api/v1/payments/57cd1f4339426820e0b3187f"
         assert last_response.ok?
         assert JSON.parse(last_response.body).kind_of? Array
         assert_equal 1, JSON.parse(last_response.body).length
     end
 
     def test_post
-        post "http://127.0.0.1:9292/api/v1/payments", { name: 'test21', amount: 10.5, category:{ id: '57c68e483942681a0c681f1a', name: 'www', tyoe: 'payout' }, chest_id: '57c684703942683938634248'}
+        post "http://127.0.0.1:9292/api/v1/payments", { name: 'test21', amount: 10.5, category:{ id: '57cd201e3942682f746ac358', name: 'www', type: 'payout' }, chest_id: '57cd201e3942682f746ac359'}
         assert JSON.parse(last_response.body).kind_of? Hash
         assert_equal 201, last_response.status
     end

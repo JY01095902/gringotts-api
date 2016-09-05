@@ -11,8 +11,9 @@ class AccountsRepository < Repository
     def insert_one(account)
         created_account = nil
         if(account.kind_of? Account)
-            account.creator_user_id = 1
             account.tenant_id = 1
+            account.user_id = 1
+            account.creator_user_id = 1
             account.creation_time_utc = Time.new.utc
             document = account.to_hash
             created_account = super(document)

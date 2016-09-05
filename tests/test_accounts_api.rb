@@ -19,7 +19,7 @@ class TestAccountsAPI < Test::Unit::TestCase
     end
 
     def test_get_api_statuses_id_returns_a_status_by_id
-        get "http://127.0.0.1:9292/api/v1/accounts/57c69bd039426816a4df6b86"
+        get "http://127.0.0.1:9292/api/v1/accounts/57cd201e3942682f746ac357"
         assert last_response.ok?
         assert JSON.parse(last_response.body).kind_of? Array
         assert_equal 1, JSON.parse(last_response.body).length

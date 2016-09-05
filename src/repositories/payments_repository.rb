@@ -11,8 +11,9 @@ class PaymentsRepository < Repository
     def insert_one(payment)
         created_payment = nil
         if(payment.kind_of? Payment)
-            payment.creator_user_id = 1
             payment.tenant_id = 1
+            payment.user_id = 1
+            payment.creator_user_id = 1
             payment.creation_time_utc = Time.new.utc
             document = payment.to_hash
             created_payment = super(document)
