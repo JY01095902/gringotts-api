@@ -11,13 +11,12 @@ class PaymentsRepository < Repository
     def insert_one(payment)
         created_payment = nil
         if(payment.kind_of? Payment)
-            payment.id = DbContext.get_object_id.to_s
             payment.creator_user_id = 1
             payment.creation_time_utc = Time.new.utc
             document = payment.to_hash
             created_payment = super(document)
             if(created_payment != nil)
-                created_payment[:id] = created_account[:_id].to_s
+                created_payment[:id] = created_payment[:_id].to_s
                 created_payment.delete(:_id)
             end
         end

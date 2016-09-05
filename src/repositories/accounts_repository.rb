@@ -11,7 +11,6 @@ class AccountsRepository < Repository
     def insert_one(account)
         created_account = nil
         if(account.kind_of? Account)
-            account.id = DbContext.get_object_id.to_s
             account.creator_user_id = 1
             account.creation_time_utc = Time.new.utc
             document = account.to_hash

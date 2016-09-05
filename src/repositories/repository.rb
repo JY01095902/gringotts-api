@@ -7,6 +7,21 @@ class Repository
         @collection = context.collections[collection]
     end
 
+    # def insert_one(entity)
+    #     created_entity = nil
+    #     if(entity.kind_of? Entity)
+    #         entity.creator_user_id = 1
+    #         entity.creation_time_utc = Time.new.utc
+    #         document = entity.to_hash
+    #         created_entity = super(document)
+    #         if(created_entity != nil)
+    #             created_entity[:id] = created_entity[:_id].to_s
+    #             created_entity.delete(:_id)
+    #         end
+    #     end
+    #     return created_entity
+    # end
+
     def insert_one(document)
         if(document.has_key?(:id))
             document[:_id] = DbContext.get_object_id
