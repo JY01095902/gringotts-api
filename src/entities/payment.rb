@@ -6,6 +6,7 @@ class Payment < Entity
     attr_accessor :amount
     attr_accessor :category
     attr_accessor :chest_id
+    attr_accessor :user_id
 
     def to_hash()
         hash = super.to_hash
@@ -14,6 +15,7 @@ class Payment < Entity
         hash[:amount] = self.amount
         hash[:category] = self.category
         hash[:chest_id] = self.chest_id
+        hash[:user_id] = self.user_id
 
         return hash
     end

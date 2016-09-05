@@ -12,6 +12,7 @@ class PaymentsRepository < Repository
         created_payment = nil
         if(payment.kind_of? Payment)
             payment.creator_user_id = 1
+            payment.tenant_id = 1
             payment.creation_time_utc = Time.new.utc
             document = payment.to_hash
             created_payment = super(document)
