@@ -30,7 +30,7 @@ class VaultsRepository < Repository
         vaults = Array.new
         documents.each do |document|
             vault = Hash.new
-            vault[:id] = document[:_id].to_s
+            vault[:id] = document[:id]
             vault[:name] = document[:name]
             vault[:amount] = document[:amount]
             vault[:account_id] = document[:account_id]

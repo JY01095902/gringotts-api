@@ -30,7 +30,7 @@ class CategoriesRepository < Repository
         categories = Array.new
         documents.each do |document|
             category = Hash.new
-            category[:id] = document[:_id].to_s
+            category[:id] = document[:id]
             category[:name] = document[:name]
             category[:type] = document[:type]
             categories << category

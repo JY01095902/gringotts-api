@@ -30,7 +30,7 @@ class AccountsRepository < Repository
         accounts = Array.new
         documents.each do |document|
             account = Hash.new
-            account[:id] = document[:_id].to_s
+            account[:id] = document[:id]
             account[:name] = document[:name]
             account[:image] = document[:image]
             accounts << account

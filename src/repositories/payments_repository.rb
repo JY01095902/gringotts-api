@@ -30,7 +30,7 @@ class PaymentsRepository < Repository
         payments = Array.new
         documents.each do |document|
             payment = Hash.new
-            payment[:id] = document[:_id].to_s
+            payment[:id] = document[:id]
             payment[:name] = document[:name]
             payment[:date] = document[:date]
             payment[:amount] = document[:amount]

@@ -30,7 +30,7 @@ class ChestsRepository < Repository
         chests = Array.new
         documents.each do |document|
             chest = Hash.new
-            chest[:id] = document[:_id].to_s
+            chest[:id] = document[:id]
             chest[:name] = document[:name]
             chest[:amount] = document[:amount]
             chest[:account_id] = document[:account_id]
