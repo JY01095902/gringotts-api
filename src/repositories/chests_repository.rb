@@ -17,10 +17,6 @@ class ChestsRepository < Repository
             chest.creation_time_utc = Time.new.utc
             document = chest.to_hash
             created_chest = super(document)
-            if(created_chest != nil)
-                created_chest[:id] = created_chest[:_id].to_s
-                created_chest.delete(:_id)
-            end
         end
         return created_chest
     end

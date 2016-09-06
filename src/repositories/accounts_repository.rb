@@ -17,10 +17,6 @@ class AccountsRepository < Repository
             account.creation_time_utc = Time.new.utc
             document = account.to_hash
             created_account = super(document)
-            if(created_account != nil)
-                created_account[:id] = created_account[:_id].to_s
-                created_account.delete(:_id)
-            end
         end
         return created_account
     end

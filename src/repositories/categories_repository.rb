@@ -17,10 +17,6 @@ class CategoriesRepository < Repository
             category.creation_time_utc = Time.new.utc
             document = category.to_hash
             created_category = super(document)
-            if(created_category != nil)
-                created_category[:id] = created_category[:_id].to_s
-                created_category.delete(:_id)
-            end
         end
         return created_category
     end

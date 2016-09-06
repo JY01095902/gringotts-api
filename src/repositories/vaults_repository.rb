@@ -17,10 +17,6 @@ class VaultsRepository < Repository
             vault.creation_time_utc = Time.new.utc
             document = vault.to_hash
             created_vault = super(document)
-            if(created_vault != nil)
-                created_vault[:id] = created_vault[:_id].to_s
-                created_vault.delete(:_id)
-            end
         end
         return created_vault
     end

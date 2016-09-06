@@ -17,10 +17,6 @@ class PaymentsRepository < Repository
             payment.creation_time_utc = Time.new.utc
             document = payment.to_hash
             created_payment = super(document)
-            if(created_payment != nil)
-                created_payment[:id] = created_payment[:_id].to_s
-                created_payment.delete(:_id)
-            end
         end
         return created_payment
     end
