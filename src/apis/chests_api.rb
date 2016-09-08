@@ -19,7 +19,24 @@ class ChestsAPI < Grape::API
         get ':id' do
             chests_repository = ChestsRepository.new
             chests = chests_repository.find({ id: params[:id]})
-            return chests
+            if chests == nil || chests.length <= 0
+                status 404
+                return { message: 'find nothing' }
+            else
+                return chests
+            end
+        end
+
+        get ':id/payments' do
+            payments_repository = PaymentsRepository.new
+            payments = payments_repository.find({ chest_id: params[:id]})
+            if payments == nil || payments.length <= 0
+                status 404
+                return { message: 'find nothing' }
+            end
+
+            status 200
+            return payments
         end
 
         params do
