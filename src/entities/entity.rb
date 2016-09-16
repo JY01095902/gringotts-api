@@ -1,5 +1,5 @@
 class Entity
-    attr_accessor :id
+    attr_accessor :_id
     attr_accessor :tenant_id
     attr_accessor :creator_user_id
     attr_accessor :creation_time_utc
@@ -8,7 +8,7 @@ class Entity
     
     def to_hash
         return { 
-                id: self.id,
+                _id: self._id,
                 tenant_id: self.tenant_id,
                 creator_user_id: self.creator_user_id,
                 creation_time_utc: self.creation_time_utc,

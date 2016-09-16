@@ -24,14 +24,19 @@ class VaultsAPI < Grape::API
 
         params do
             requires :name, type: String
-            requires :account_id, type: String
+            requires :type, type: String
+            requires :owner_user_id, type: Integer
             optional :amount, type: Float, default: 0
+            optional :style, type: Hash, default: { color: '#000', background_color: '#fff'}
         end
         post do
             vault = Vault.new
             vault.name = params[:name]
             vault.amount = params[:amount]
-            vault.account_id = params[:account_id]
+            vault.type = params[:type]
+            vault.style = params[:style]
+            vault.details = params[:details]
+            vault.owner_user_id = params[:owner_user_id]
             vaults_repository = VaultsRepository.new
             created_vault = vaults_repository.insert_one(vault)
             return created_vault
@@ -49,11 +54,18 @@ class VaultsAPI < Grape::API
             end
         end
         
+        params do
+            requires :last_modifier_user_id, type: Integer
+        end
         patch ':id' do
             patch = Hash.new
             patch[:name] = params[:name] if params[:name] != nil
             patch[:amount] = params[:amount] if params[:amount] != nil
-            patch[:account_id] = params[:account_id] if params[:account_id] != nil
+            patch[:type] = params[:type] if params[:type] != nil
+            patch[:style] = params[:style] if params[:style] != nil
+            patch[:details] = params[:details] if params[:details] != nil
+            patch[:owner_user_id] = params[:owner_user_id] if params[:owner_user_id] != nil
+            patch[:last_modifier_user_id] = params[:last_modifier_user_id] if params[:last_modifier_user_id] != nil
             vaults_repository = VaultsRepository.new
             modified_count = vaults_repository.patch_one({ id: params[:id]}, patch)
             if(modified_count == 1)
@@ -67,14 +79,20 @@ class VaultsAPI < Grape::API
         
         params do
             requires :name, type: String
-            requires :account_id, type: String
+            requires :type, type: String
+            requires :owner_user_id, type: Integer
+            requires :last_modifier_user_id, type: Integer
             optional :amount, type: Float, default: 0
         end
         put ':id' do
             vault = Vault.new
             vault.name = params[:name]
             vault.amount = params[:amount]
-            vault.account_id = params[:account_id]
+            vault.type = params[:type]
+            vault.style = params[:style]
+            vault.details = params[:details]
+            vault.owner_user_id = params[:owner_user_id]
+            vault.last_modifier_user_id = params[:last_modifier_user_id]
             vaults_repository = VaultsRepository.new
             modified_count = vaults_repository.update_one({ id: params[:id]}, vault.to_hash)
             if(modified_count == 1)

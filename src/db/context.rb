@@ -8,8 +8,8 @@ class DbContext
     attr_reader :collections;
 
     def initialize
-        client = Mongo::Client.new([ '127.0.0.1:27017' ], :database => 'gringotts')
-        # client = Mongo::Client.new([ '127.0.0.1:20001' ], :database => 'gringotts')
+        # client = Mongo::Client.new([ '127.0.0.1:27017' ], :database => 'gringotts')
+        client = Mongo::Client.new([ '127.0.0.1:20001' ], :database => 'gringotts')
 
         @collections = Hash.new
         @collections[:accounts] = client[:accounts]

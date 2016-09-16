@@ -12,7 +12,7 @@ class VaultsRepository < Repository
         created_vault = nil
         if(vault.kind_of? Vault)
             vault.tenant_id = 1
-            vault.user_id = 1
+            vault.owner_user_id = 1
             vault.creator_user_id = 1
             vault.creation_time_utc = Time.new.utc
             document = vault.to_hash
@@ -26,10 +26,13 @@ class VaultsRepository < Repository
         vaults = Array.new
         documents.each do |document|
             vault = Hash.new
-            vault[:id] = document[:id]
+            vault[:id] = document[:_id].to_s
             vault[:name] = document[:name]
             vault[:amount] = document[:amount]
-            vault[:account_id] = document[:account_id]
+            vault[:type] = document[:type]
+            vault[:style] = document[:style]
+            vault[:details] = document[:details]
+            vault[:owner_user_id] = document[:owner_user_id]
             vaults << vault
         end
         return vaults
