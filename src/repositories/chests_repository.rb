@@ -29,7 +29,7 @@ class ChestsRepository < Repository
             chest[:id] = document[:id]
             chest[:name] = document[:name]
             chest[:amount] = document[:amount]
-            chest[:account_id] = document[:account_id]
+            chest[:vault_id] = document[:vault_id]
             chests << chest
         end
         return chests
