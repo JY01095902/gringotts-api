@@ -6,7 +6,6 @@ class Vault < Entity
     attr_accessor :type
     attr_accessor :style
     attr_accessor :details
-    attr_accessor :owner_user_id
 
     def to_hash()
         hash = super.to_hash
@@ -15,7 +14,6 @@ class Vault < Entity
         hash[:type] = self.type
         hash[:style] = self.style
         hash[:details] = self.details
-        hash[:owner_user_id] = self.owner_user_id
 
         return hash
     end

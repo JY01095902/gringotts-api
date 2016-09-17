@@ -12,7 +12,7 @@ class VaultsAPI < Grape::API
     resources :vaults do
         get do
             vaults_repository = VaultsRepository.new
-            vaults = vaults_repository.find
+            vaults = vaults_repository.find(params)
             return vaults
         end
 

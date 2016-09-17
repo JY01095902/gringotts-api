@@ -22,7 +22,8 @@ class VaultsRepository < Repository
     end
 
     def find(filter = nil)
-        documents = super(filter);
+        filter = VaultsRepository.format_filter filter
+        documents = super filter;
         vaults = Array.new
         documents.each do |document|
             vault = Hash.new
@@ -32,9 +33,16 @@ class VaultsRepository < Repository
             vault[:type] = document[:type]
             vault[:style] = document[:style]
             vault[:details] = document[:details]
-            vault[:owner_user_id] = document[:owner_user_id]
             vaults << vault
         end
         return vaults
+    end
+
+    def self.format_filter(filter)
+        if filter != nil
+            filter[:tenant_id] = filter[:tenant_id].to_i if filter[:tenant_id] != nil
+            filter[:owner_user_id] = filter[:owner_user_id].to_i if filter[:owner_user_id] != nil
+        end
+        return filter
     end
 end
