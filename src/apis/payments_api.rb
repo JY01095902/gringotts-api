@@ -12,7 +12,7 @@ class PaymentsAPI < Grape::API
     resources :payments do
         get do
             payments_repository = PaymentsRepository.new
-            payments = payments_repository.find
+            payments = payments_repository.find params
             return payments
         end
 
@@ -25,26 +25,26 @@ class PaymentsAPI < Grape::API
         params do
             requires :name, type: String
             requires :amount, type: Float
+            requires :vault, type: Hash
             requires :category, type: Hash
-            requires :chest_id, type: String
             optional :date, type: Time, default: Time.new
         end
         post do
             payment = Payment.new
             payment.name = params[:name]
-            payment.amount = params[:amount]
-            payment.category = params[:category]
-            payment.chest_id = params[:chest_id]
             payment.date = params[:date]
+            payment.amount = params[:amount]
+            payment.vault = params[:vault]
+            payment.category = params[:category]
             payments_repository = PaymentsRepository.new
-            created_payment = payments_repository.insert_one(payment)
+            created_payment = payments_repository.insert_one payment
             return created_payment
         end
 
         delete ':id' do
             payments_repository = PaymentsRepository.new
             deleted_count = payments_repository.delete_one({ id: params[:id]})
-            if(deleted_count == 1)
+            if deleted_count == 1
                 status 204
                 return String.new
             else
@@ -53,16 +53,20 @@ class PaymentsAPI < Grape::API
             end
         end
         
+        params do
+            requires :last_modifier_user_id, type: Integer
+            optional :date, type: Time, default: Time.new
+        end
         patch ':id' do
             patch = Hash.new
             patch[:name] = params[:name] if params[:name] != nil
-            patch[:amount] = params[:amount] if params[:amount] != nil
-            patch[:category] = params[:category] if params[:category] != nil
-            patch[:chest_id] = params[:chest_id] if params[:chest_id] != nil
             patch[:date] = params[:date] if params[:date] != nil
+            patch[:amount] = params[:amount] if params[:amount] != nil
+            patch[:vault] = params[:vault] if params[:vault] != nil
+            patch[:category] = params[:category] if params[:category] != nil
             payments_repository = PaymentsRepository.new
             modified_count = payments_repository.patch_one({ id: params[:id]}, patch)
-            if(modified_count == 1)
+            if modified_count == 1
                 status 204
                 return String.new
             else
@@ -73,15 +77,22 @@ class PaymentsAPI < Grape::API
         
         params do
             requires :name, type: String
-            optional :image, type: String, default: '/blank.png'
+            requires :amount, type: Float
+            requires :vault, type: Hash
+            requires :category, type: Hash
+            requires :owner_user_id, type: Integer
+            requires :last_modifier_user_id, type: Integer
+            optional :date, type: Time, default: Time.new
         end
         put ':id' do
             payment = Payment.new
             payment.name = params[:name]
             payment.amount = params[:amount]
+            payment.vault = params[:vault]
             payment.category = params[:category]
-            payment.chest_id = params[:chest_id]
             payment.date = params[:date]
+            payment.owner_user_id = params[:owner_user_id]
+            payment.last_modifier_user_id = params[:last_modifier_user_id]
             payments_repository = PaymentsRepository.new
             modified_count = payments_repository.update_one({ id: params[:id]}, payment.to_hash)
             if(modified_count == 1)

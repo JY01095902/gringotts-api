@@ -12,8 +12,7 @@ class CategoriesAPI < Grape::API
     resources :categories do
         get do
             categories_repository = CategoriesRepository.new
-            puts params.class
-            categories = categories_repository.find(params)
+            categories = categories_repository.find params
             return categories
         end
 
@@ -32,7 +31,7 @@ class CategoriesAPI < Grape::API
             category.name = params[:name]
             category.type = params[:type]
             categories_repository = CategoriesRepository.new
-            created_category = categories_repository.insert_one(category)
+            created_category = categories_repository.insert_one category
             return created_category
         end
 
@@ -71,6 +70,8 @@ class CategoriesAPI < Grape::API
         params do
             requires :name, type: String
             requires :type, type: String
+            requires :owner_user_id, type: Integer
+            requires :last_modifier_user_id, type: Integer
         end
         put ':id' do
             category = Category.new
