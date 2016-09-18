@@ -9,7 +9,6 @@ class PaymentsRepository < Repository
     end
 
     def insert_one(payment)
-        puts payment
         created_payment = nil
         if(payment.kind_of? Payment)
             payment.tenant_id = 1
@@ -18,25 +17,36 @@ class PaymentsRepository < Repository
             payment.creation_time_utc = Time.new.utc
             payment = PaymentsRepository.format_payment payment
             document = payment.to_hash
-            created_payment = super(document)
+            created_payment = super document
+            if created_payment[:vault].kind_of? Hash
+                created_payment[:vault][:id] = created_payment[:vault][:_id].to_s
+                created_payment[:vault].delete :_id
+            end
+            if created_payment[:category].kind_of? Hash
+                created_payment[:category][:id] = created_payment[:category][:_id].to_s
+                created_payment[:category].delete :_id
+            end
         end
         return created_payment
     end
 
     def update_one(filter, payment)
         payment = PaymentsRepository.format_payment payment
-        modified_count = super filter, payment.to_hash
+        document = payment.to_hash
+        document.delete :_id
+        modified_count = super filter, document
     end
 
     def patch_one(filter, patch)
-        if patch[:vault] != nil
+        if patch[:vault].kind_of? Hash
             patch[:vault][:_id] = Repository.get_object_id patch[:vault][:id]
             patch[:vault].delete :id
         end
-        if patch[:category] != nil
+        if patch[:category].kind_of? Hash
             patch[:category][:_id] = Repository.get_object_id patch[:category][:id]
             patch[:category].delete :id
         end
+        puts patch
         modified_count = super filter, patch
     end
 
@@ -62,7 +72,7 @@ class PaymentsRepository < Repository
     end
 
     def PaymentsRepository.format_filter(filter)
-        if filter != nil
+        if filter.kind_of? Hash
             filter[:tenant_id] = filter[:tenant_id].to_i if filter[:tenant_id] != nil
             filter[:owner_user_id] = filter[:owner_user_id].to_i if filter[:owner_user_id] != nil
             filter[:date] = Time.parse filter[:date] if filter[:date] != nil
@@ -79,11 +89,11 @@ class PaymentsRepository < Repository
     end
 
     def PaymentsRepository.format_payment(payment)
-        if payment.vault != nil
+        if payment.vault.kind_of? Hash
             payment.vault[:_id] = Repository.get_object_id payment.vault[:id]
             payment.vault.delete :id
         end
-        if payment.category != nil
+        if payment.category.kind_of? Hash
             payment.category[:_id] = Repository.get_object_id payment.category[:id]
             payment.category.delete :id
         end

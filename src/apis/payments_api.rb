@@ -64,8 +64,9 @@ class PaymentsAPI < Grape::API
             patch[:amount] = params[:amount] if params[:amount] != nil
             patch[:vault] = params[:vault] if params[:vault] != nil
             patch[:category] = params[:category] if params[:category] != nil
-            patct[:last_modifier_user_id] = params[:last_modifier_user_id] if params[:category] != nil
+            patch[:last_modifier_user_id] = params[:last_modifier_user_id] if params[:last_modifier_user_id] != nil
             payments_repository = PaymentsRepository.new
+            puts patch
             modified_count = payments_repository.patch_one({ id: params[:id]}, patch)
             if modified_count == 1
                 status 204
