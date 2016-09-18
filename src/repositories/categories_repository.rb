@@ -35,7 +35,7 @@ class CategoriesRepository < Repository
         return categories
     end
 
-    def self.format_filter(filter)
+    def CategoriesRepository.format_filter(filter)
         if filter != nil
             filter[:tenant_id] = filter[:tenant_id].to_i if filter[:tenant_id] != nil
             filter[:owner_user_id] = filter[:owner_user_id].to_i if filter[:owner_user_id] != nil

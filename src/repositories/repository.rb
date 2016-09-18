@@ -19,9 +19,9 @@ class Repository
 
     def patch_one(filter, patch)
         filter = Repository.format_filter filter
-        if patch.has_key? :_id
-            patch.delete :_id
-        end
+        # if patch.has_key? :_id
+        #     patch.delete :_id
+        # end
         patch[:last_modification_time_utc] = Time.new.utc
         result = @collection.update_one filter, { '$set': patch }
         return result.modified_count
@@ -29,9 +29,9 @@ class Repository
 
     def update_one(filter, update)
         filter = Repository.format_filter filter
-        if update.has_key? :_id
-            update.delete :_id
-        end
+        # if update.has_key? :_id
+        #     update.delete :_id
+        # end
         update[:last_modification_time_utc] = Time.new.utc
         result = @collection.update_one filter, update
         return result.modified_count
@@ -48,11 +48,15 @@ class Repository
         return @collection.find filter;
     end
 
-    def self.format_filter(filter)
+    def Repository.format_filter(filter)
         if filter.has_key? :id
             filter[:_id] = DbContext.get_object_id filter[:id]
             filter.delete :id
         end if filter != nil
         return filter
+    end
+
+    def Repository.get_object_id(string = nil)
+        return string == nil ? DbContext.get_object_id : DbContext.get_object_id(string)
     end
 end
