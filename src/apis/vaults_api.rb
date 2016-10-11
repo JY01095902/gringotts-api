@@ -37,6 +37,8 @@ class VaultsAPI < Grape::API
             vault.style = params[:style]
             vault.details = params[:details]
             vault.owner_user_id = params[:owner_user_id]
+            vault.tenant_id = params[:tenant_id]
+            vault.creator_user_id = params[:creator_user_id]
             vaults_repository = VaultsRepository.new
             created_vault = vaults_repository.insert_one(vault)
             return created_vault
