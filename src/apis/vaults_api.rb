@@ -25,7 +25,7 @@ class VaultsAPI < Grape::API
         params do
             requires :name, type: String
             requires :type, type: String
-            requires :owner_user_id, type: Integer
+            requires :creator_user_id, type: Integer
             optional :amount, type: Float, default: 0
             optional :style, type: Hash, default: { color: '#000', background_color: '#fff'}
         end
@@ -36,7 +36,6 @@ class VaultsAPI < Grape::API
             vault.type = params[:type]
             vault.style = params[:style]
             vault.details = params[:details]
-            vault.owner_user_id = params[:owner_user_id]
             vault.tenant_id = params[:tenant_id]
             vault.creator_user_id = params[:creator_user_id]
             vaults_repository = VaultsRepository.new
