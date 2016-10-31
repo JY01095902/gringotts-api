@@ -22,7 +22,7 @@ class CategoriesRepository < Repository
     end
 
     def find(filter = nil)
-        filter = VaultsRepository.format_filter filter
+        filter = CategoriesRepository.format_filter filter
         documents = super filter;
         categories = Array.new
         documents.each do |document|
