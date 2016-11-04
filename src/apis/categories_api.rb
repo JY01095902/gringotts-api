@@ -13,13 +13,22 @@ class CategoriesAPI < Grape::API
         get do
             categories_repository = CategoriesRepository.new
             categories = categories_repository.find params
-            return categories
+            
+            return CategoriesAPI.to_hypermedia(categories)
         end
 
         get ':id' do
             categories_repository = CategoriesRepository.new
             categories = categories_repository.find({ id: params[:id]})
-            return categories
+
+            if categories.length > 0
+                category = categories[0]
+
+                return CategoriesAPI.to_hypermedia(category)
+            else
+                status 404
+                return 'The resource is not found.'
+            end
         end
 
         params do
@@ -87,6 +96,34 @@ class CategoriesAPI < Grape::API
             else
                 status 404
                 return { message: 'no category has been updated.'}
+            end
+        end
+
+        def CategoriesAPI.to_hypermedia(resource)
+            if(resource.kind_of? Hash)
+                selfUrl = "serviceRoot/$metadata#categories/#{resource[:id]}"
+                return Hash[
+                    :@id => selfUrl, 
+                    :@edit_link => selfUrl, 
+                    :id => resource[:id], 
+                    :name => resource[:name], 
+                    :type => resource[:type]
+                ]
+            elsif(resource.kind_of? Array)
+                categories = Hash[:@context => 'serviceRoot/$metadata#categories', :value => Array.new]
+                resource.each do |category|
+                    selfUrl = "serviceRoot/$metadata#categories/#{category[:id]}"
+                    categories[:value] << Hash[
+                        :@id => selfUrl, 
+                        :@edit_link => selfUrl, 
+                        :id => category[:id], 
+                        :name => category[:name], 
+                        :type => category[:type]
+                    ]
+                end
+                return categories
+            else
+                return resource
             end
         end
     end
