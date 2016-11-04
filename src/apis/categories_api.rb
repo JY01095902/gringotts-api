@@ -27,7 +27,7 @@ class CategoriesAPI < Grape::API
                 return CategoriesAPI.to_hypermedia(category)
             else
                 status 404
-                return 'The resource is not found.'
+                return { message: 'The resource is not found.'}
             end
         end
 
@@ -100,8 +100,9 @@ class CategoriesAPI < Grape::API
         end
 
         def CategoriesAPI.to_hypermedia(resource)
+            serviceRoot = 'http://127.0.0.1:9292/api/v1'
             if(resource.kind_of? Hash)
-                selfUrl = "serviceRoot/$metadata#categories/#{resource[:id]}"
+                selfUrl = "#{serviceRoot}/categories/#{resource[:id]}"
                 return Hash[
                     :@id => selfUrl, 
                     :@edit_link => selfUrl, 
@@ -110,9 +111,9 @@ class CategoriesAPI < Grape::API
                     :type => resource[:type]
                 ]
             elsif(resource.kind_of? Array)
-                categories = Hash[:@context => 'serviceRoot/$metadata#categories', :value => Array.new]
+                categories = Hash[:@context => "#{serviceRoot}/$metadata#categories", :value => Array.new]
                 resource.each do |category|
-                    selfUrl = "serviceRoot/$metadata#categories/#{category[:id]}"
+                    selfUrl = "#{serviceRoot}/categories/#{category[:id]}"
                     categories[:value] << Hash[
                         :@id => selfUrl, 
                         :@edit_link => selfUrl, 
