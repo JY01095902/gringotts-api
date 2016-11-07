@@ -25,6 +25,7 @@ class VaultsAPI < Grape::API
         params do
             requires :name, type: String
             requires :type, type: String
+            requires :tenant_id, type: Integer
             requires :creator_user_id, type: Integer
             optional :amount, type: Float, default: 0
             optional :style, type: Hash, default: { color: '#000', background_color: '#fff'}

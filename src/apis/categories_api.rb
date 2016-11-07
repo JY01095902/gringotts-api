@@ -34,11 +34,15 @@ class CategoriesAPI < Grape::API
         params do
             requires :name, type: String
             requires :type, type: String
+            requires :tenant_id, type: Integer
+            requires :creator_user_id, type: Integer
         end
         post do
             category = Category.new
             category.name = params[:name]
             category.type = params[:type]
+            category.tenant_id = params[:tenant_id]
+            category.creator_user_id = params[:creator_user_id]
             categories_repository = CategoriesRepository.new
             created_category = categories_repository.insert_one category
             return created_category

@@ -27,6 +27,8 @@ class PaymentsAPI < Grape::API
             requires :amount, type: Float
             requires :vault, type: Hash
             requires :category, type: Hash
+            requires :tenant_id, type: Integer
+            requires :creator_user_id, type: Integer
             optional :date, type: Time, default: Time.new
         end
         post do
@@ -36,6 +38,8 @@ class PaymentsAPI < Grape::API
             payment.amount = params[:amount]
             payment.vault = params[:vault]
             payment.category = params[:category]
+            payment.tenant_id = params[:tenant_id]
+            payment.creator_user_id = params[:creator_user_id]
             payments_repository = PaymentsRepository.new
             created_payment = payments_repository.insert_one payment
             return created_payment

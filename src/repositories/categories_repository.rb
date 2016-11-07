@@ -11,9 +11,7 @@ class CategoriesRepository < Repository
     def insert_one(category)
         created_category = nil
         if(category.kind_of? Category)
-            category.tenant_id = 1
-            category.owner_user_id = 1
-            category.creator_user_id = 1
+            category.owner_user_id = category.creator_user_id
             category.creation_time_utc = Time.new.utc
             document = category.to_hash
             created_category = super(document)
