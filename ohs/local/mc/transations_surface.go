@@ -19,7 +19,7 @@ func NewTransactionSurface(tran domain.Transaction) TransactionSurface {
 		Id:           tran.Id,
 		Amount:       tran.Amount,
 		CurrencyType: tran.CurrencyType,
-		TradedTime:   tran.TradedTime.Format(time.RFC3339),
+		TradedTime:   tran.TradedTime.Local().Format(time.RFC3339),
 		Tags:         tran.GetTags(),
 	}
 
